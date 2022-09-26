@@ -26,6 +26,27 @@ using ReTest
         hello = `echo hello`
         @test get_stdout(hello) == "hello"
     end
+    @testset "window operations" begin
+        @test typeof(current_win()) == String
+    end
+    @testset "`Jumplist`" begin
+        j = Jumplist()
+        j2 = traverse(j, true)
+        j3 = traverse(j, false)
+        @test j() == j2() == j3() == first(j) == last(j)
+        jup = update(j)
+        @test jup() == j()
+        push!(j2, "test")
+        @test first(j2) != "test"
+        @test last(j2) == "test"
+        j2 += 1
+        @test j2() == "test"
+    end
+    @testset "jumping" begin
+        j = Jumplist()
+        @test run(jumpto(current_win())).exitcode == 0
+        @test run(jumpto(j)).exitcode == 0
+    end
 end
 
 
