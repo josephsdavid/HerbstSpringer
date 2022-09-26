@@ -3,7 +3,7 @@ module HerbstSpringer
 using Comonicon
 import Base
 
-export current_win, Jumplist, jumpto, traverse, _joinexp, hc
+export current_win, Jumplist, jumpto, traverse, hc
 
 
 _joinexp(x) = `$(x)`
