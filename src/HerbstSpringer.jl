@@ -1,8 +1,10 @@
 module HerbstSpringer
 
-using Comonicon
 import Base
 import Base:+, push!, first, last
+using Comonicon
+using Sockets
+using UUIDs
 
 export current_win, Jumplist, jumpto, traverse, hc, update
 
@@ -62,8 +64,15 @@ jumpto(winid) = hc(`jumpto`, winid)
 
 jumpto(j::Jumplist) = jumpto(j())
 
+
 function listener()
-    process = hc(`--idle`)
+    errormonitor(@async begin
+        server = listen(2002)
+        while true
+            sock = accept(server)
+            cmd = run(pipeline(ignorestatus(hc(`--idle`)), stdout = sock))
+        end
+    end)
 end
 
 
