@@ -13,6 +13,7 @@ Listens to `herbstclient --idle` for a custom hook
 - Basic herbstclient commands
 - Representation of a jumplist
 - Behavior of the jumplist type
+- Tests for the above
 - async listening to output of herbstclient idle command for 
 - command which starts the server
 - command which goes forwrard in the jumplist
