@@ -1,0 +1,9 @@
+name = "HerbstSpringer"
+uuid = "d3749c3f-09f0-45e0-93f5-052381da2c19"
+authors = ["josephsdavid <josephsd@smu.edu>"]
+version = "0.1.0"
+
+[deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+Comonicon = "863f3e99-da2a-4334-8734-de3dacbe5542"
+ReTest = "e0db7c4e-2690-44b9-bad6-7687da720f89"
