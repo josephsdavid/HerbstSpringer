@@ -21,10 +21,10 @@ using ReTest
         @test hc(one_arg...) == `herbstclient p`
         @test hc(two_args...) == `herbstclient p q`
     end
-    @testset "`get_stdout`" begin
-        using HerbstSpringer: get_stdout
+    @testset "`get_output`" begin
+        using HerbstSpringer: get_output
         hello = `echo hello`
-        @test get_stdout(hello) == "hello"
+        @test get_output(hello)[1] == "hello"
     end
     @testset "window operations" begin
         @test typeof(current_win()) == String
