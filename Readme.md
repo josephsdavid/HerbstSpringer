@@ -10,12 +10,13 @@ Listens to `herbstclient --idle` for a custom hook
 
 ## roadmap
 
-- Basic herbstclient commands
-- Representation of a jumplist
-- Behavior of the jumplist type
-- Tests for the above
-- async listening to output of herbstclient idle command for 
-- command which starts the server
-- command which goes forwrard in the jumplist
-- CI with build artifacts so it goes fast
-- CI tests
+- [x] Basic herbstclient commands
+- [x] Representation of a jumplist
+- [x] Behavior of the jumplist type
+- [x] Tests for the above
+- [x] async listening to output of herbstclient idle command for 
+- [ ] Tests for above
+- [ ] Better, tree-style representation of the jumplist
+- [x] async hook listener
+- [ ] CI with build artifacts so it goes fast
+- [ ] CI tests
