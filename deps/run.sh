@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-${BASH_SOURCE[0]}/springer_bin/bin/springer $@
+source=${BASH_SOURCE[0]}
+source=$(dirname $source)
+$source/springer_bin/bin/springer $@

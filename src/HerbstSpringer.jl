@@ -26,12 +26,12 @@ end
 
 function version()
     cprint("\tspringer", :blue)
-    cprint(" v$(SPRINGER_VERSION)", :normal)
+    cprint(" v$(SPRINGER_VERSION)\n", :normal)
 end
 
 function usage()
     version()
-    println("\n\nUsage:\n")
+    println("\nUsage:\n")
     cprint("\tspringer <command>", :blue)
     cprint("\nRun a daemon which listens for hooks `", :normal)
     cprint("jump_prev", :red)
@@ -82,9 +82,5 @@ function springer()::Cint
     end
     return 1
 end
-
-
-
-
 
 end # module herbstluftwm_jumplist
