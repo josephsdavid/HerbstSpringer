@@ -1,4 +1,4 @@
-struct Jumplist
+mutable struct Jumplist
     items::Vector{String}
     current_index::Int64
     size::Int64
@@ -8,14 +8,17 @@ struct Jumplist
 end
 
 
-function traverse(j::Jumplist, forward::Bool)
-    (j.current_index > 0 && j.current_index < length(j.items)) || return j
-    current_index = j.current_index + (forward ? 1 : -1)
-    return Jumplist(j.items, current_index)
+function traverse!(j::Jumplist, forward::Bool)
+    if forward
+        j.current_index = min(j.current_index + 1, length(j.items))
+    else
+        j.current_index = max(j.current_index - 1, 1)
+    end
+    return j
 end
 
-go_forward(j::Jumplist) = traverse(j, true)
-go_backward(j::Jumplist) = traverse(j, false)
+go_next!(j::Jumplist) = traverse!(j, true)
+go_prev!(j::Jumplist) = traverse!(j, false)
 
 
 (j::Jumplist)() = @inbounds j.items[j.current_index]
@@ -27,24 +30,26 @@ for f in (:first, :last)
     end
 end
 
-
-function update(j::Jumplist)
+function update!(j::Jumplist)
     winid = current_win()
     isempty(winid) && return j
-    (; items) = j
-    if length(items) == j.size
-        popfirst!(items)
+    if length(j.items) == j.size
+        popfirst!(j.items)
     end
-    if winid != last(j)
-        push!(items, winid)
-    end
-    items = reverse(unique(reverse(items)))
-    return Jumplist(items, length(items))
+    push!(j, winid)
+    traverse!(j, true)
+    j.items = reverse(unique(reverse(j.items)))
+    j.current_index = findfirst((x) -> x == winid, j.items)
+    return j
 end
 
 
 jumpto(winid) = hc(`jumpto`, winid)
-
-jumpto(j::Jumplist) = jumpto(j())
-
-
+function jumpto(j::Jumplist)
+    (; items, current_index, size) = j
+    run(jumpto(j()))
+    j.items = items
+    j.current_index = current_index
+    j.size = size
+    return j
+end

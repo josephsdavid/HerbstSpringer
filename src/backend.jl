@@ -34,33 +34,38 @@ idlehook() = get_output(hc(`-c 1 --wait`))[1]
 
 open_channel(bufsize=32) = Channel(bufsize)
 
-function create_future!(c::Channel, f, args...; kwds...)
-end
 
-function dialoglistener()
-    channel = open_channel()
-
-    @async while channel.state == :open
-        put!(channel, idlehook())
+function dialoglistener(;inchannel = open_channel(), outchannel = open_channel())
+    @async while inchannel.state == :open
+        put!(inchannel, idlehook())
     end
 
     j = Jumplist()
+    just_jumped = false
 
-    @async while channel.state == :open
-        hook = take!(channel)
-        if occursin("focus_changed", hook)
-            j = update(j)
-        elseif occursin("jump_prev", hook)
-            j = go_backward(j)
-            @show j
-            run(jumpto(j))
-        elseif occursin("jump_next", hook)
-            j = go_forward(j)
-            @show j
-            run(jumpto(j))
-
+    while inchannel.state == :open
+        hook = take!(inchannel)
+        try
+            if occursin("focus_changed", hook)
+                if !just_jumped
+                    update!(j)
+                    put!(outchannel, j())
+                else
+                    just_jumped = false
+                end
+            elseif occursin("jump_prev", hook)
+                go_prev!(j)
+                jumpto(j)
+                just_jumped = true
+            elseif occursin("jump_next", hook)
+                go_next!(j)
+                jumpto(j)
+                just_jumped = true
+            end
+        catch
+            continue
         end
     end
 
-    return channel
+    return inchannel
 end

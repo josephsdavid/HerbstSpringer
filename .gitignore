@@ -1,1 +1,3 @@
-Manifest.toml
+deps/application/**
+deps/artifacts/**
+deps/build.log
