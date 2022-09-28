@@ -36,6 +36,7 @@ open_channel(bufsize=32) = Channel(bufsize)
 
 
 function dialoglistener(;inchannel = open_channel(), outchannel = open_channel())
+    cprint("Starting herbstluftwm daemon\n\n", :green)
     @async while inchannel.state == :open
         put!(inchannel, idlehook())
     end
@@ -43,8 +44,10 @@ function dialoglistener(;inchannel = open_channel(), outchannel = open_channel()
     j = Jumplist()
     just_jumped = false
 
+    cprint("Ready!\n\n", :green)
     while inchannel.state == :open
         hook = take!(inchannel)
+        @show hook
         try
             if occursin("focus_changed", hook)
                 if !just_jumped
