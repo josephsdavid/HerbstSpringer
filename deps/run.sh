@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-~/bin/springer_bin/bin/springer $@
+${BASH_SOURCE[0]}/springer_bin/bin/springer $@
