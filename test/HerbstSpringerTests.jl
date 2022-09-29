@@ -5,7 +5,7 @@ using ReTest
 
 @testset "command manipulation" begin
     # test cases
-    many_args = ("a", 1, [1, 2,3], :delight )
+    many_args = ("a", 1, [1, 2, 3], :delight)
     one_arg = (:p,)
     two_args = (:p, "q")
 

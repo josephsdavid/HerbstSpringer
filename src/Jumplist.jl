@@ -33,7 +33,7 @@ end
 function update!(j::Jumplist)
     winid = current_win()
     isempty(winid) && return j
-    if length(j.items) == j.size
+    if length(j.items) >= j.size
         popfirst!(j.items)
     end
     push!(j, winid)

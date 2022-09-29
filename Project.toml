@@ -4,11 +4,12 @@ authors = ["josephsdavid <josephsd@smu.edu>"]
 version = "0.1.0"
 
 [deps]
+Crayons = "a8cc5b0e-0ffa-5ad4-8c14-923d3ee1735f"
 
 [extras]
-ReTest = "e0db7c4e-2690-44b9-bad6-7687da720f89"
 PackageCompiler = "9b87118b-4619-50d2-8e1e-99f35a4d4d9d"
+ReTest = "e0db7c4e-2690-44b9-bad6-7687da720f89"
 
 [targets]
-test=["ReTest"]
-build=["PackageCompiler"]
+build = ["PackageCompiler"]
+test = ["ReTest"]

@@ -14,6 +14,6 @@ release: deps/application
 	cp -r $? $(RELEASE_PATH)/springer_bin
 	cp deps/run.sh $(RELEASE_PATH)/springer
 	chmod +x $(RELEASE_PATH)/springer
-	tar -czvf springer.gz /path/to/my/directory
+	tar -cvf springer.tar /path/to/my/directory
 
 

@@ -11,7 +11,7 @@ function get_output(c::Cmd)
     out = Pipe()
     err = Pipe()
 
-    run(pipeline(ignorestatus(c); stdout=out, stderr=err))
+    run(pipeline(ignorestatus(c); stdout = out, stderr = err))
     close(out.in)
     close(err.in)
 
@@ -32,11 +32,11 @@ idlehook() = get_output(hc(`-c 1 --wait`))[1]
 #### the big event listener
 ####
 
-open_channel(bufsize=32) = Channel(bufsize)
+open_channel(bufsize = 32) = Channel(bufsize)
 
 
-function dialoglistener(;inchannel = open_channel(), outchannel = open_channel())
-    cprint("Starting herbstluftwm daemon\n\n", :green)
+function dialoglistener(; inchannel = open_channel(), outchannel = open_channel())
+    print("Starting herbstluftwm daemon\n\n")
     @async while inchannel.state == :open
         put!(inchannel, idlehook())
     end
@@ -44,15 +44,22 @@ function dialoglistener(;inchannel = open_channel(), outchannel = open_channel()
     j = Jumplist()
     just_jumped = false
 
-    cprint("Ready!\n\n", :green)
+    print(Crayon(foreground = :green), "Ready!\n\n", Crayon(reset = true))
     while inchannel.state == :open
         hook = take!(inchannel)
-        @show hook
+        @show(hook)
         try
             if occursin("focus_changed", hook)
                 if !just_jumped
                     update!(j)
                     put!(outchannel, j())
+                    println(
+                        Crayon(foreground = :blue),
+                        "[Jumplist Update] ",
+                        Crayon(foreground = :yellow),
+                        fetch(outchannel),
+                        Crayon(reset = true),
+                    )
                 else
                     just_jumped = false
                 end
@@ -60,10 +67,24 @@ function dialoglistener(;inchannel = open_channel(), outchannel = open_channel()
                 go_prev!(j)
                 jumpto(j)
                 just_jumped = true
+                println(
+                    Crayon(foreground = :red),
+                    "[Jumped backwards] ",
+                    Crayon(foreground = :yellow),
+                    j(),
+                    Crayon(reset = true),
+                )
             elseif occursin("jump_next", hook)
                 go_next!(j)
                 jumpto(j)
                 just_jumped = true
+                println(
+                    Crayon(foreground = :green),
+                    "[Jumped backwards] ",
+                    Crayon(foreground = :yellow),
+                    j(),
+                    Crayon(reset = true),
+                )
             end
         catch
             continue
